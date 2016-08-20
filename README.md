@@ -11,9 +11,12 @@ Coming soon
 
 #How to use
 
-1.Highlight the text that you want to add a hyperlink to. 
+1.Highlight the text that you want to add a hyperlink to.
+
 2.Press ctrl-Q
+
 3.Choose the support article that you want to link
+
 4.Done!
 
 #How it works
