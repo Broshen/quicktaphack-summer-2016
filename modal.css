@@ -1,0 +1,17 @@
+/* The Modal (background) */
+.modal {
+    height: 70%;
+    overflow: auto; /* Enable scroll if needed */
+}
+
+#myModalContent{
+    padding: 15px;
+}
+
+.qtsSearchResults:hover{
+    background-color: #d3d3d3;
+}
+
+.extension-search-results{
+    overflow:auto;
+}
