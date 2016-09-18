@@ -1,48 +1,19 @@
-var thisurl, lasturl, alreadyinserted = false;
-
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  console.log("incomplete");
+
+  /*
+  IMPORTANT - for demo purposes, the script is injected into every page that loads. 
+  In production, this needs to be changed so that chrome.tabs checks if the URL is correct before injecting it.
+
+  Another issue is that some pages may send multiple changeInfo.status=="complete". 
+  This is because the page may load multiple resources seperatly (i.e. favicon, aws resources, and I suspect also CDN resources).
+  Each resource loaded will send a changeInfo.status=="complete",
+  which means that the script needs to detect the correct one to inject the script into.
+
+  Injecting the script into the wrong one can sometimes block the rest of the page from loading - this is true for freshdesk.
+  I don't even know why, or how...
+  */
   if(changeInfo.status=="complete"){
-  	console.log(changeInfo.status);
-  	lasturl=thisurl;
-    thisurl = tab.url;
-
-    if(thisurl){
-    	chrome.tabs.executeScript(tabId, {code: "console.log('this url: "+thisurl.substring(7,thisurl.length)+"');"});
-    }
-    
-
-    if(lasturl){
-    	chrome.tabs.executeScript(tabId, {code: "console.log('last url: "+lasturl.substring(7,lasturl.length)+"');"});
-    }
-
-    //alert("thisurl " + thisurl);
-    //alert("lasturl " + lasturl);
-    console.log("tab has number: "  + /\d/.test(tab.url));
-    if(tab.url.includes('http://support.quicktapsurvey.com/helpdesk/tickets/') 
-    	&& /\d/.test(tab.url)){
-
-    	alreadyinserted = true;
-    	chrome.tabs.executeScript(tabId, {code: "window.hasbeeninserted"}, function(result) {
-    		console.log(result);
-
-		    if (!result[0]) {
-		        
-		       chrome.tabs.executeScript(tabId, {file: "jquery.js"}, function(result){console.log(result[0])});
-
 		       chrome.tabs.executeScript(tabId, {file: "background.js"}, function(result){console.log(result[0])});
-		    }
-		    else{
-		    	console.log(result);
-		    	console.log(result[0]);
-		    }
-		});      
-    }
-
-    if(alreadyinserted != undefined){
-    	chrome.tabs.executeScript(tabId, {code: "console.log('inserted? "+ alreadyinserted+"');"});
-    }
-
   }
 }); 
 
